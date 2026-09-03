@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muroja'ah Manzili - Pengelolaan Tugas Guru</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Inter & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col antialiased transition-colors duration-300">
+
+    <header class="bg-gradient-to-r from-emerald-900 via-teal-800 to-emerald-950 dark:from-slate-900 dark:via-emerald-950 dark:to-slate-900 text-white shadow-xl sticky top-0 z-50 border-b border-emerald-600/30 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3.5 w-full md:w-auto justify-between md:justify-start">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/10 dark:bg-slate-800/60 backdrop-blur-md p-3 rounded-2xl border border-white/20 shadow-inner">
+                        <i class="fa-solid fa-quran text-xl md:text-2xl text-emerald-300"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-lg md:text-xl font-extrabold tracking-tight">Muroja'ah Manzili</h1>
+                        <p class="text-[11px] md:text-xs text-emerald-200/90 font-medium" id="header-subtitle">Pengelolaan Tugas Harian & Rekapitulasi</p>
+                    </div>
+                </div>
+                <!-- Dark Mode Toggle Mobile -->
+                <button onclick="toggleDarkMode()" class="md:hidden bg-white/10 hover:bg-white/20 dark:bg-slate-800 p-2.5 rounded-xl border border-white/20 text-emerald-200 transition-all flex items-center justify-center shadow-sm" title="Ganti Mode Terang/Gelap">
+                    <i id="theme-icon-mobile" class="fa-solid fa-moon text-sm"></i>
+                </button>
+            </div>
+            
+            <!-- Navigation Tabs & Theme Toggle (Desktop) -->
+            <div class="flex items-center gap-3 w-full md:w-auto overflow-x-auto no-scrollbar">
+                <nav class="flex gap-2 bg-emerald-950/40 dark:bg-slate-900/80 p-2 rounded-2xl border border-emerald-600/30 dark:border-slate-700/60 backdrop-blur-md no-scrollbar">
+                    <button onclick="switchTab('daily')" id="nav-daily" class="px-4 py-2.5 text-xs md:text-sm font-bold rounded-xl bg-white text-emerald-950 dark:bg-emerald-600 dark:text-white shadow-md transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <i class="fa-solid fa-calendar-day"></i> Tugas Harian
+                    </button>
+                    <button onclick="switchTab('classes')" id="nav-classes" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-xl text-emerald-100 hover:bg-emerald-800/60 dark:hover:bg-slate-800 transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <i class="fa-solid fa-users-gear"></i> Kelola Kelas
+                    </button>
+                    <button onclick="switchTab('recap')" id="nav-recap" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-xl text-emerald-100 hover:bg-emerald-800/60 dark:hover:bg-slate-800 transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <i class="fa-solid fa-clipboard-list"></i> Rekapitulasi
+                    </button>
+                    <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-xl text-emerald-100 hover:bg-emerald-800/60 dark:hover:bg-slate-800 transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <i class="fa-solid fa-trophy text-amber-300"></i> Peringkat Rajin
+                    </button>
+                </nav>
+                
+                <!-- Dark Mode Toggle Desktop -->
+                <button onclick="toggleDarkMode()" class="hidden md:flex bg-white/10 hover:bg-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 p-3 rounded-2xl border border-white/20 dark:border-slate-700 text-emerald-200 transition-all items-center justify-center shadow-sm flex-shrink-0" title="Ganti Mode Terang/Gelap">
+                    <i id="theme-icon-desktop" class="fa-solid fa-moon text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+        <!-- Global Class Selector & Date Bar -->
+        <div class="bg-white dark:bg-slate-900 p-5 sm:p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 transition-colors">
+            <div class="flex items-center gap-3.5 w-full sm:w-auto">
+                <div class="bg-emerald-50 dark:bg-emerald-950/50 text-emerald-900 dark:text-emerald-200 px-4 py-3 rounded-2xl border border-emerald-200/80 dark:border-emerald-800/60 font-extrabold text-xs md:text-sm flex items-center gap-2.5 flex-shrink-0 shadow-xs">
+                    <i class="fa-solid fa-school text-emerald-600 dark:text-emerald-400"></i> Pilih Kelas:
+                </div>
+                <select id="global-class-select" onchange="changeActiveClassName(this.value)" class="w-full sm:w-auto px-4.5 py-3 border border-slate-300 dark:border-slate-700 rounded-2xl text-xs md:text-sm font-extrabold bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-inner cursor-pointer">
+                    <!-- Populated dynamically -->
+                </select>
+            </div>
+            <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-4 py-3 rounded-2xl border border-slate-200/80 dark:border-slate-700 flex items-center gap-2.5 self-end sm:self-center shadow-xs">
+                <i class="fa-regular fa-calendar text-emerald-600 dark:text-emerald-400"></i> <span id="current-date-display"></span>
+            </div>
+        </div>
+
+        <!-- TAB 1: DAILY VIEW -->
+        <section id="tab-daily" class="space-y-6">
+            <!-- Day Selector Bar -->
+            <div class="bg-white dark:bg-slate-900 p-4.5 sm:p-5 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 transition-colors">
+                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-week text-emerald-600 dark:text-emerald-400 text-sm"></i> Pilih Hari Tugas:
+                </div>
+                <div id="day-buttons" class="grid grid-cols-4 sm:flex sm:flex-wrap gap-2 w-full sm:w-auto justify-center">
+                    <!-- Dynamic day buttons populated via JS -->
+                </div>
+            </div>
+
+            <!-- Content Area for Selected Day -->
+            <div id="day-content-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Left: Preview with per-line copy & Poll Helper -->
+                <div class="space-y-6 order-2 lg:order-1">
+                    <div class="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 lg:sticky lg:top-28 space-y-5 transition-colors">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 p-3 rounded-2xl shadow-inner">
+                                <i class="fa-brands fa-whatsapp text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-extrabold text-slate-900 dark:text-slate-100 text-sm md:text-base">Kirim ke WhatsApp</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">Klik ikon salin di samping baris untuk menyalin teks per kalimat</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Interactive Per-Line Copy Preview Box -->
+                        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 h-64 overflow-y-auto space-y-2 shadow-inner leading-relaxed" id="wa-preview-container">
+                            <!-- Populated dynamically with line copy icons -->
+                        </div>
+
+                        <div class="space-y-3 pt-1">
+                            <button onclick="shareWhatsApp()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs md:text-sm transition-all shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2.5">
+                                <i class="fa-brands fa-whatsapp text-base"></i> Kirim Semua Tugas ke WhatsApp
+                            </button>
+                            <button onclick="copyAllWAText()" class="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold py-3 px-4 rounded-2xl text-xs transition-all flex items-center justify-center gap-2 border border-slate-200 dark:border-slate-700 shadow-xs">
+                                <i class="fa-regular fa-copy"></i> Salin Seluruh Teks Pesan
+                            </button>
+
+                            <!-- Polling Assistant Box with per-line copy icons -->
+                            <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+                                <div class="text-[11px] font-extrabold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5 uppercase">
+                                    <i class="fa-solid fa-square-poll-vertical"></i> Template Polling WA Cepat:
+                                </div>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400">Salin per kalimat menggunakan ikon salin di samping tiap opsi polling di bawah:</p>
+                                
+                                <div id="poll-lines-container" class="space-y-1.5 bg-teal-50/50 dark:bg-teal-950/30 p-3 rounded-xl border border-teal-200/80 dark:border-teal-900/60">
+                                    <!-- Populated via JS with individual copy buttons -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Groups & Checklist -->
+                <div class="lg:col-span-2 space-y-6 order-1 lg:order-2" id="groups-checklist-area">
+                    <!-- Dynamic groups inserted here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: MANAGE CLASSES & STUDENTS -->
+        <section id="tab-classes" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+                    <div>
+                        <h2 class="text-base md:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                            <i class="fa-solid fa-users-gear text-emerald-600 dark:text-emerald-400"></i> Pengaturan Kelas & Anggota Siswa
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tambah kelas baru, hapus kelas, atau kelola daftar nama siswa di setiap kelompok.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                        <button onclick="resetToDefaultData()" class="flex-1 sm:flex-none bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 dark:hover:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-4 py-3 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-xs">
+                            <i class="fa-solid fa-rotate-right"></i> Reset Default
+                        </button>
+                        <button onclick="openAddClassModal()" class="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20">
+                            <i class="fa-solid fa-plus"></i> Tambah Kelas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Class Management Grid -->
+                <div class="space-y-6" id="classes-management-container">
+                    <!-- Rendered dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: RECAP & HISTORY -->
+        <section id="tab-recap" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+                    <div>
+                        <h2 class="text-base md:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                            <i class="fa-solid fa-clipboard-list text-emerald-600 dark:text-emerald-400"></i> Rekapitulasi & Riwayat Pengerjaan
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Filter berdasarkan rentang tanggal untuk melihat siapa yang sudah dan belum mengerjakan.</p>
+                    </div>
+                    
+                    <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                            <span>Dari:</span>
+                            <input type="date" id="filter-start-date" class="px-3 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium">
+                        </div>
+                        <div class="flex items-center gap-2 text-xs font-bold text-slate-600 dark:text-slate-300">
+                            <span>S/d:</span>
+                            <input type="date" id="filter-end-date" class="px-3 py-2.5 border border-slate-300 dark:border-slate-700 rounded-xl text-xs bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 font-medium">
+                        </div>
+                        <button onclick="applyDateFilter()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-xs">
+                            Filter
+                        </button>
+                        <button onclick="resetDateFilter()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 px-3 py-2.5 rounded-xl text-xs font-bold transition">
+                            Reset
+                        </button>
+                        <button onclick="shareRecapWhatsApp()" class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Kirim Laporan Rekap ke Grup
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Summary Stats Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40 border border-emerald-200/80 dark:border-emerald-800/60 p-5 rounded-2xl shadow-xs">
+                        <div class="text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider">Total Sesi Tercatat</div>
+                        <div id="stat-total-sessions" class="text-2xl sm:text-3xl font-extrabold text-emerald-950 dark:text-emerald-100 mt-1.5">0</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40 border border-blue-200/80 dark:border-blue-800/60 p-5 rounded-2xl shadow-xs">
+                        <div class="text-blue-800 dark:text-blue-300 text-xs font-bold uppercase tracking-wider">Total Muroja'ah Selesai</div>
+                        <div id="stat-total-completed" class="text-2xl sm:text-3xl font-extrabold text-blue-950 dark:text-blue-100 mt-1.5">0</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/40 border border-amber-200/80 dark:border-amber-800/60 p-5 rounded-2xl shadow-xs">
+                        <div class="text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider">Rata-rata Kepatuhan</div>
+                        <div id="stat-avg-rate" class="text-2xl sm:text-3xl font-extrabold text-amber-950 dark:text-amber-100 mt-1.5">0%</div>
+                    </div>
+                </div>
+
+                <!-- Detailed History Table -->
+                <div class="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm whitespace-nowrap sm:whitespace-normal">
+                        <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 uppercase tracking-wider font-extrabold border-b border-slate-200 dark:border-slate-800">
+                            <tr>
+                                <th class="p-4">Tanggal & Hari</th>
+                                <th class="p-4">Kelas & Kelompok</th>
+                                <th class="p-4">Siswa Selesai</th>
+                                <th class="p-4">Belum</th>
+                                <th class="p-4">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recap-table-body" class="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
+                            <!-- Populated via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: LEADERBOARD -->
+        <section id="tab-leaderboard" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
+                    <div>
+                        <h2 class="text-base md:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                            <i class="fa-solid fa-trophy text-amber-500"></i> Peringkat Siswa Paling Rajin
+                        </h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Daftar santri paling rajin berdasarkan total setoran muroja'ah manzili yang diselesaikan.</p>
+                    </div>
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <button onclick="shareLeaderboardWhatsApp()" class="bg-teal-700 hover:bg-teal-800 text-white px-4 py-2.5 rounded-xl text-xs font-extrabold transition flex items-center gap-1.5 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i> Kirim Peringkat ke Grup
+                        </button>
+                        <div class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-900 dark:text-amber-300 px-4.5 py-2.5 rounded-2xl text-xs font-bold flex items-center gap-2 shadow-xs">
+                            <i class="fa-solid fa-medal text-amber-500"></i> Kelas: <span id="leaderboard-class-name" class="font-extrabold">Kelas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="leaderboard-container">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Notification Modal -->
+    <div id="custom-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in duration-200">
+            <div class="flex items-center space-x-3.5 text-emerald-600 dark:text-emerald-400">
+                <div class="bg-emerald-100 dark:bg-emerald-950 p-3 rounded-2xl shadow-inner">
+                    <i class="fa-solid fa-circle-check text-xl"></i>
+                </div>
+                <h3 id="modal-title" class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100">Notifikasi</h3>
+            </div>
+            <p id="modal-message" class="text-sm text-slate-600 dark:text-slate-300 whitespace-pre-line leading-relaxed"></p>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl text-sm font-bold transition-all shadow-md shadow-emerald-600/20">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Kelas Baru -->
+    <div id="class-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-slate-100 dark:border-slate-800">
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                <div class="bg-emerald-100 dark:bg-emerald-950 p-2.5 rounded-2xl text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-school"></i></div> Tambah Kelas Baru
+            </h3>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Nama Kelas:</label>
+                <input type="text" id="new-class-name-input" placeholder="Contoh: Kelas Utsman" class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100">
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button onclick="closeAddClassModal()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2.5 rounded-2xl text-xs font-bold transition">
+                    Batal
+                </button>
+                <button onclick="saveNewClass()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl text-xs font-bold transition shadow-md shadow-emerald-600/20">
+                    Simpan Kelas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Siswa Baru -->
+    <div id="student-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-5 border border-slate-100 dark:border-slate-800">
+            <h3 class="text-base sm:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                <div class="bg-emerald-100 dark:bg-emerald-950 p-2.5 rounded-2xl text-emerald-600 dark:text-emerald-400"><i class="fa-solid fa-user-plus"></i></div> Tambah Siswa Baru
+            </h3>
+            <p class="text-xs font-medium text-slate-500 dark:text-slate-400" id="student-modal-subtitle">Tambah siswa ke kelompok tertentu.</p>
+            <div>
+                <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">Nama Lengkap Siswa:</label>
+                <input type="text" id="new-student-name-input" placeholder="Nama Santri..." class="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-2xl text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100">
+            </div>
+            <div class="flex justify-end gap-2.5 pt-2">
+                <button onclick="closeAddStudentModal()" class="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-4 py-2.5 rounded-2xl text-xs font-bold transition">
+                    Batal
+                </button>
+                <button onclick="saveNewStudent()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-2xl text-xs font-bold transition shadow-md shadow-emerald-600/20">
+                    Tambah Siswa
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CURRICULUMS & TEMPLATES ---
+
+        const aliTemplate = {
+            "Senin": {
+                title: "Hari Senin",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini (4 hal/hari)",
+                groups: [
+                    {
+                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
+                        surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Selasa": {
+                title: "Hari Selasa",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Rabu": {
+                title: "Hari Rabu",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Rabu yg sudah hafal -+ 1 Juz",
+                        surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Kamis": {
+                title: "Hari Kamis",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Bayyinah s.d At Tiin",
+                        surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Jum'at": {
+                title: "Hari Jum'at",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Insyirah s.d Al Lail",
+                        surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Sabtu": {
+                title: "Hari Sabtu",
+                headerNote: "Bismillah berikut tugas muroja'ah Manzili (4 hal/hari)",
+                groups: [
+                    {
+                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
+                        surah: "Abasa s.d Annaziat\n- Abasa 2x\n- Annaziat 2x\nAl Muthaffifin s.d Abasa",
+                        students: []
+                    }
+                ]
+            },
+            "Ahad": {
+                title: "Hari Ahad",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "An Naba 2x",
+                        students: []
+                    }
+                ]
+            }
+        };
+
+        const defaultClassesData = {
+            "Kelas Abu Abdurrahman": {
+                "Senin": {
+                    title: "Hari Senin",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Sudah hafal -+ 1 Juz",
+                            surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Selasa": {
+                    title: "Hari Selasa",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Sudah hafal -+ 1 Juz",
+                            surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Rabu": {
+                    title: "Hari Rabu",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Sudah hafal -+ 1 Juz",
+                            surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Kamis": {
+                    title: "Hari Kamis",
+                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
+                    groups: [
+                        {
+                            name: "🟦 Al Bayyinah s.d At Tiin",
+                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
+                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Jum'at": {
+                    title: "Hari Jum'at",
+                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
+                    groups: [
+                        {
+                            name: "🟦 Al Insyirah s.d Al Lail",
+                            surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan ( kembali ke annas lagi ya )",
+                                "Defrand Augustav Muttaqin ( kembali ke annas lagi ya )", "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Hafalan Lain",
+                            surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Sabtu": {
+                    title: "Hari Sabtu",
+                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
+                    groups: [
+                        {
+                            name: "🟦 Asy Syams s.d Al Balad",
+                            surah: "Surat Al-Balad 3x\nAsy-Syams 3x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka",
+                                "Muhammad Tristan Arka Santosa ( kembali lagi ke annas ya )", "Khanza Almira",
+                                "Keenan Arkana Ramadhan Setiawan ( kembali lagi ke annas ya )",
+                                "Defrand Augustav Muttaqin ( kembali lagi ke annas ya )", "Naufal Giebran Jayadi",
+                                "Sabran Nur Awal ( kembali lagi ke annas ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 Abasa s.d Annaziat",
+                            surah: "Abasa 2x\nAnnaziat 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                },
+                "Ahad": {
+                    title: "Hari Ahad",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "Al Fajr 2x",
+                            students: [
+                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                            ]
+                        },
+                        {
+                            name: "🟦 Sudah hafal -+ 1 Juz",
+                            surah: "An Naba 2x",
+                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
+                        }
+                    ]
+                }
+            },
+            "Kelas Abu Ubaidah": {
+                "Senin": {
+                    title: "Hari Senin",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
+                                "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
+                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
+                                "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
+                            ]
+                        },
+                        {
+                            name: "🟦 yg sudah hafal -+ 1 Juz",
+                            surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                },
+                "Selasa": {
+                    title: "Hari Selasa",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
+                                "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
+                                "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
+                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 yg sudah hafal -+ 1 Juz",
+                            surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                },
+                "Rabu": {
+                    title: "Hari Rabu",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 -+ 1/2 juz",
+                            surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 yg sudah hafal -+ 1 Juz",
+                            surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                },
+                "Kamis": {
+                    title: "Hari Kamis",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 Al Bayyinah s.d At Tiin",
+                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
+                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                },
+                "Jum'at": {
+                    title: "Hari Jum'at",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 Al Insyirah s.d Al Lail",
+                            surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )", "Nabila Azalia Putri Aquilla",
+                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 Hafalan Lain",
+                            surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi"
+                            ]
+                        }
+                    ]
+                },
+                "Sabtu": {
+                    title: "Hari Sabtu",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 Asy-Syams & Al-Balad",
+                            surah: "Asy-Syams\nAl-Balad",
+                            students: [
+                                "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
+                                "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
+                                "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
+                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                            ]
+                        },
+                        {
+                            name: "🟦 'Abasa & An-Nazi'at",
+                            surah: "'Abasa\nAn-Nazi'at",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                },
+                "Ahad": {
+                    title: "Hari Ahad",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [
+                        {
+                            name: "🟦 Al Bayyinah s.d At Tiin",
+                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                            students: [
+                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
+                                "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
+                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
+                                "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
+                            ]
+                        },
+                        {
+                            name: "🟦 Al-Inshiqoq s.d Al-Ghashiyah",
+                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                            students: [
+                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "Kelas Ali": JSON.parse(JSON.stringify(aliTemplate)),
+            "Kelas Zubair": JSON.parse(JSON.stringify(aliTemplate)),
+            "Kelas Utsman": JSON.parse(JSON.stringify(aliTemplate)),
+            "Kelas Omar": {
+                "Senin": {
+                    title: "Hari Senin",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x", students: ["Omar"] }]
+                },
+                "Selasa": {
+                    title: "Hari Selasa",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x", students: ["Omar"] }]
+                },
+                "Rabu": {
+                    title: "Hari Rabu",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x", students: ["Omar"] }]
+                },
+                "Kamis": {
+                    title: "Hari Kamis",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x", students: ["Omar"] }]
+                },
+                "Jum'at": {
+                    title: "Hari Jum'at",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x", students: ["Omar"] }]
+                },
+                "Sabtu": {
+                    title: "Hari Sabtu",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Surat Al-Balad 3x\nAsy-Syams 3x", students: ["Omar"] }]
+                },
+                "Ahad": {
+                    title: "Hari Ahad",
+                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al Fajr 2x", students: ["Omar"] }]
+                }
+            }
+        };
+
+        // Student lists mapping
+        const aliStudents = ["Muhamad Yudanta Irham", "Ahsan Ruzain Ramadhan", "Ihsan Hamizan Ramadhan", "Muhammad Yusuf Wiranatanagara", "Muhammad Auris Hilmi Ilham"];
+        const zubairStudents = ["Alesha Assyabiya", "Yumna Kamidia Rinjani", "Almira Azzalea", "Calista Naura Salsabila", "Alya Zahirah"];
+        const ustmanStudents = ["Muhamad Yudanta Irham", "Alzam Irawan", "Qianno Kenzie Hamizan", "Fathir Santosa"];
+
+        function populateClassStudents(className, studentList) {
+            if (defaultClassesData[className]) {
+                Object.keys(defaultClassesData[className]).forEach(day => {
+                    defaultClassesData[className][day].groups.forEach(group => {
+                        group.students = [...studentList];
+                    });
+                });
+            }
+        }
+
+        populateClassStudents("Kelas Ali", aliStudents);
+        populateClassStudents("Kelas Zubair", zubairStudents);
+        populateClassStudents("Kelas Utsman", ustmanStudents);
+
+        const daysList = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"];
+
+        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v11') || JSON.stringify(defaultClassesData));
+        let activeClassName = Object.keys(classesData)[0] || "Kelas Abu Abdurrahman";
+        
+        function getTodayIndonesianName() {
+            const dayIndex = new Date().getDay();
+            const mapping = { 1: "Senin", 2: "Selasa", 3: "Rabu", 4: "Kamis", 5: "Jum'at", 6: "Sabtu", 0: "Ahad" };
+            return mapping[dayIndex] || "Senin";
+        }
+
+        let activeDay = getTodayIndonesianName();
+        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v11') || '{}');
+        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v11') || '[]');
+
+        let targetGroupForAdd = { day: null, groupIndex: null };
+
+        window.onload = function() {
+            initTheme();
+            updateDateDisplay();
+            renderClassSelector();
+            renderDayButtons();
+            renderDayContent(activeDay);
+            renderPollLines();
+            initRecapFilters();
+            renderRecapTable();
+            renderLeaderboard();
+            renderClassesManagement();
+        };
+
+        // --- DARK MODE LOGIC ---
+        function initTheme() {
+            const savedTheme = localStorage.getItem('murojaah_theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                updateThemeIcons('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                updateThemeIcons('light');
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            const theme = isDark ? 'dark' : 'light';
+            localStorage.setItem('murojaah_theme', theme);
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const iconMob = document.getElementById('theme-icon-mobile');
+            const iconDesk = document.getElementById('theme-icon-desktop');
+            if (theme === 'dark') {
+                if (iconMob) iconMob.className = "fa-solid fa-sun text-sm text-amber-300";
+                if (iconDesk) iconDesk.className = "fa-solid fa-sun text-sm text-amber-300";
+            } else {
+                if (iconMob) iconMob.className = "fa-solid fa-moon text-sm text-emerald-200";
+                if (iconDesk) iconDesk.className = "fa-solid fa-moon text-sm text-emerald-200";
+            }
+        }
+
+        function updateDateDisplay() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date-display').innerText = new Date().toLocaleDateString('id-ID', options);
+        }
+
+        function switchTab(tabId) {
+            ['daily', 'classes', 'recap', 'leaderboard'].forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (el) el.classList.add('hidden');
+                const nav = document.getElementById(`nav-${t}`);
+                if (nav) {
+                    nav.classList.remove('bg-white', 'text-emerald-950', 'dark:bg-emerald-600', 'dark:text-white', 'shadow-md');
+                    nav.classList.add('text-emerald-100', 'hover:bg-emerald-800/60', 'dark:hover:bg-slate-800');
+                }
+            });
+
+            const activeTabEl = document.getElementById(`tab-${tabId}`);
+            if (activeTabEl) activeTabEl.classList.remove('hidden');
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-emerald-100', 'hover:bg-emerald-800/60', 'dark:hover:bg-slate-800');
+                activeNav.classList.add('bg-white', 'text-emerald-950', 'dark:bg-emerald-600', 'dark:text-white', 'shadow-md');
+            }
+
+            if (tabId === 'recap') renderRecapTable();
+            if (tabId === 'leaderboard') renderLeaderboard();
+            if (tabId === 'classes') renderClassesManagement();
+        }
+
+        function renderClassSelector() {
+            const select = document.getElementById('global-class-select');
+            select.innerHTML = '';
+            Object.keys(classesData).forEach(className => {
+                const opt = document.createElement('option');
+                opt.value = className;
+                opt.innerText = className;
+                if (className === activeClassName) opt.selected = true;
+                select.appendChild(opt);
+            });
+            document.getElementById('header-subtitle').innerText = `Pengelolaan Tugas - ${activeClassName}`;
+            document.getElementById('leaderboard-class-name').innerText = activeClassName;
+        }
+
+        function changeActiveClassName(className) {
+            activeClassName = className;
+            document.getElementById('header-subtitle').innerText = `Pengelolaan Tugas - ${activeClassName}`;
+            document.getElementById('leaderboard-class-name').innerText = activeClassName;
+            renderDayContent(activeDay);
+            renderLeaderboard();
+            renderRecapTable();
+        }
+
+        function renderDayButtons() {
+            const container = document.getElementById('day-buttons');
+            container.innerHTML = '';
+            daysList.forEach(day => {
+                const btn = document.createElement('button');
+                btn.className = `px-3.5 py-2 md:px-4 md:py-2.5 rounded-2xl text-xs font-bold transition-all text-center ${
+                    activeDay === day 
+                        ? 'bg-emerald-700 text-white shadow-lg shadow-emerald-700/25 scale-105' 
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                }`;
+                btn.innerText = day;
+                btn.onclick = () => {
+                    activeDay = day;
+                    renderDayButtons();
+                    renderDayContent(day);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function getFormattedDateKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function renderDayContent(day) {
+            const classObj = classesData[activeClassName];
+            if (!classObj || !classObj[day]) return;
+            const data = classObj[day];
+            const area = document.getElementById('groups-checklist-area');
+            area.innerHTML = '';
+
+            const dateKey = getFormattedDateKey();
+
+            data.groups.forEach((group, gIdx) => {
+                const card = document.createElement('div');
+                card.className = "bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-4 transition-colors";
+                
+                let studentsHtml = '';
+                group.students.forEach((student, sIdx) => {
+                    const storageKey = `${activeClassName}_${dateKey}_${day}_${gIdx}_${sIdx}`;
+                    const isChecked = checklistState[storageKey] || false;
+
+                    studentsHtml += `
+                        <label class="flex items-center justify-between p-3.5 rounded-2xl border ${isChecked ? 'bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 shadow-xs' : 'bg-slate-50/80 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/80'} hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-all cursor-pointer">
+                            <div class="flex items-center space-x-3.5">
+                                <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheck('${storageKey}', '${day}', ${gIdx}, '${student.replace(/'/g, "\\'")}')" class="w-4.5 h-4.5 text-emerald-600 rounded-lg border-slate-300 dark:border-slate-600 focus:ring-emerald-500 cursor-pointer">
+                                <span class="text-xs md:text-sm font-bold ${isChecked ? 'text-emerald-950 dark:text-emerald-200 line-through opacity-85' : 'text-slate-700 dark:text-slate-200'}">${student}</span>
+                            </div>
+                            <span class="text-[10px] px-2.5 py-1 rounded-xl font-extrabold tracking-wide uppercase flex-shrink-0 ${isChecked ? 'bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100 shadow-xs' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
+                                ${isChecked ? 'Selesai' : 'Belum'}
+                            </span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="border-b border-slate-100 dark:border-slate-800 pb-4">
+                        <h4 class="font-extrabold text-slate-900 dark:text-slate-100 text-sm sm:text-base flex items-center gap-2.5">
+                            <div class="bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 p-2 rounded-xl"><i class="fa-solid fa-bookmark text-xs"></i></div> ${group.name}
+                        </h4>
+                        <div class="mt-3 bg-gradient-to-r from-emerald-50/60 to-teal-50/60 dark:from-emerald-950/40 dark:to-teal-950/40 p-4 rounded-2xl border border-emerald-100 dark:border-emerald-900 text-xs text-emerald-950 dark:text-emerald-200 whitespace-pre-line font-medium leading-relaxed">
+                            ${group.surah}
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Daftar Santri & Checklist:</div>
+                        <div class="space-y-2.5">${studentsHtml}</div>
+                    </div>
+                `;
+                area.appendChild(card);
+            });
+
+            updateWAPreviewBox(day);
+        }
+
+        function toggleCheck(storageKey, day, gIdx, studentName) {
+            const isChecked = event.target.checked;
+            checklistState[storageKey] = isChecked;
+            localStorage.setItem('murojaah_checklist_state_v11', JSON.stringify(checklistState));
+
+            const dateKey = getFormattedDateKey();
+            let historyEntry = historyLogs.find(h => h.date === dateKey && h.day === day && h.className === activeClassName);
+            if (!historyEntry) {
+                historyEntry = { date: dateKey, day: day, className: activeClassName, completedStudents: [] };
+                historyLogs.push(historyEntry);
+            }
+
+            if (isChecked) {
+                if (!historyEntry.completedStudents.includes(studentName)) {
+                    historyEntry.completedStudents.push(studentName);
+                }
+            } else {
+                historyEntry.completedStudents = historyEntry.completedStudents.filter(s => s !== studentName);
+            }
+            localStorage.setItem('murojaah_history_logs_v11', JSON.stringify(historyLogs));
+
+            renderDayContent(day);
+        }
+
+        function generateWAText(day) {
+            const classObj = classesData[activeClassName];
+            if (!classObj || !classObj[day]) return "";
+            const data = classObj[day];
+            let text = `Bismillah berikut tugas muroja'ah Manzili ${activeClassName}\n*${data.title}*\n\n${data.headerNote}\n\n`;
+            
+            data.groups.forEach(group => {
+                text += `${group.name}\n${group.surah}\n\n`;
+                text += `Nama Anak:\n`;
+                group.students.forEach(st => {
+                    text += `- ${st}\n`;
+                });
+                text += `\n___________________\n\n`;
+            });
+            return text.trim();
+        }
+
+        function updateWAPreviewBox(day) {
+            const container = document.getElementById('wa-preview-container');
+            container.innerHTML = '';
+            
+            const fullText = generateWAText(day);
+            const lines = fullText.split('\n');
+
+            lines.forEach((line) => {
+                const row = document.createElement('div');
+                row.className = "flex items-start justify-between gap-2 text-xs font-mono text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 p-1.5 rounded-xl transition group";
+                
+                const textSpan = document.createElement('span');
+                textSpan.className = "flex-1 whitespace-pre-wrap select-all";
+                textSpan.innerText = line === "" ? " " : line;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = "opacity-0 group-hover:opacity-100 bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 hover:bg-emerald-200 p-1.5 rounded-lg text-[10px] transition flex items-center gap-1 flex-shrink-0";
+                copyBtn.title = "Salin Baris Ini";
+                copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i>`;
+                copyBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    copySpecificLine(line);
+                };
+
+                row.appendChild(textSpan);
+                if (line.trim() !== "") {
+                    row.appendChild(copyBtn);
+                }
+                container.appendChild(row);
+            });
+        }
+
+        function renderPollLines() {
+            const pollContainer = document.getElementById('poll-lines-container');
+            if (!pollContainer) return;
+            pollContainer.innerHTML = '';
+
+            const pollLines = [
+                "Hari ini sudah Muroja'ah ?",
+                "Alhamdulillah, sudah dan lancar semua ! ⭐",
+                "Alhamdulillah, sudah, namun ada bbrpa surat yg blm lancar (boleh info di grup / japri yg tdk lancar)",
+                "Baru sebagian / setengah jalan"
+            ];
+
+            pollLines.forEach((line) => {
+                const row = document.createElement('div');
+                row.className = "flex items-start justify-between gap-2 text-xs text-teal-900 dark:text-teal-200 bg-white dark:bg-slate-900 p-2 rounded-xl border border-teal-100 dark:border-teal-900/60 hover:shadow-xs transition group";
+
+                const textSpan = document.createElement('span');
+                textSpan.className = "flex-1 font-medium select-all leading-snug";
+                textSpan.innerText = line;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = "bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200 hover:bg-teal-200 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition flex items-center gap-1 flex-shrink-0 shadow-xs";
+                copyBtn.title = "Salin Baris Ini";
+                copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Salin`;
+                copyBtn.onclick = () => {
+                    copySpecificLine(line);
+                };
+
+                row.appendChild(textSpan);
+                row.appendChild(copyBtn);
+                pollContainer.appendChild(row);
+            });
+        }
+
+        function copySpecificLine(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showModal("Disalin!", `Berhasil menyalin:\n"${text}"`);
+            } catch (err) {
+                showModal("Gagal", "Tidak dapat menyalin teks.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function copyAllWAText() {
+            const text = generateWAText(activeDay);
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showModal("Berhasil!", "Seluruh teks tugas berhasil disalin ke clipboard!");
+            } catch (err) {
+                showModal("Gagal", "Tidak dapat menyalin teks otomatis.");
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function shareWhatsApp() {
+            const text = encodeURIComponent(generateWAText(activeDay));
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function shareRecapWhatsApp() {
+            const startDate = document.getElementById('filter-start-date').value;
+            const endDate = document.getElementById('filter-end-date').value;
+            const filtered = historyLogs.filter(h => {
+                if (!startDate || !endDate) return true;
+                return h.date >= startDate && h.date <= endDate;
+            });
+
+            let totalCompletedCount = 0;
+            let totalPossibleCount = 0;
+            filtered.forEach(log => {
+                const classObj = classesData[log.className];
+                const dataDay = classObj ? classObj[log.day] : null;
+                if (dataDay) {
+                    dataDay.groups.forEach(g => totalPossibleCount += g.students.length);
+                }
+                totalCompletedCount += log.completedStudents.length;
+            });
+            const avgRate = totalPossibleCount > 0 ? Math.round((totalCompletedCount / totalPossibleCount) * 100) : 0;
+
+            let reportText = `📊 *LAPORAN REKAPITULASI MUROJA'AH MANZILI*\n`;
+            reportText += `📅 Periode: ${startDate || 'Awal'} s.d. ${endDate || 'Sekarang'}\n\n`;
+            reportText += `• Total Sesi Tercatat: *${filtered.length} Sesi*\n`;
+            reportText += `• Total Setoran Selesai: *${totalCompletedCount} Selesai*\n`;
+            reportText += `• Rata-rata Kepatuhan: *${avgRate}%*\n\n`;
+            reportText += `_Dikelola melalui Sistem Muroja'ah Manzili_`;
+
+            const text = encodeURIComponent(reportText);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function shareLeaderboardWhatsApp() {
+            let studentCounts = {};
+            const classObj = classesData[activeClassName];
+            if (!classObj) return;
+
+            Object.values(classObj).forEach(dayObj => {
+                dayObj.groups.forEach(g => {
+                    g.students.forEach(st => {
+                        if (!studentCounts[st]) studentCounts[st] = 0;
+                    });
+                });
+            });
+
+            historyLogs.filter(h => h.className === activeClassName).forEach(log => {
+                log.completedStudents.forEach(st => {
+                    if (studentCounts[st] !== undefined) {
+                        studentCounts[st] += 1;
+                    } else {
+                        studentCounts[st] = 1;
+                    }
+                });
+            });
+
+            let sortedStudents = Object.keys(studentCounts).map(name => {
+                return { name, count: studentCounts[name] };
+            }).sort((a, b) => b.count - a.count);
+
+            let reportText = `🏆 *DAFTAR PERINGKAT SANTRI PALING RAJIN*\n`;
+            reportText += `🏫 Kelas: *${activeClassName}*\n\n`;
+            
+            sortedStudents.forEach((item, idx) => {
+                const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '▪️';
+                reportText += `${medal} *${item.name}* : ${item.count} Sesi Selesai\n`;
+            });
+
+            reportText += `\n_Barakallahu fiikum untuk seluruh santri yang rajin menyetorkan muroja'ah manzili!_`;
+
+            const text = encodeURIComponent(reportText);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function renderClassesManagement() {
+            const container = document.getElementById('classes-management-container');
+            container.innerHTML = '';
+
+            Object.keys(classesData).forEach(className => {
+                const classData = classesData[className];
+                const card = document.createElement('div');
+                card.className = "border border-slate-200 dark:border-slate-800 rounded-3xl p-5 sm:p-6 bg-slate-50/60 dark:bg-slate-800/40 space-y-5 shadow-xs transition-colors";
+                
+                let daysHtml = '';
+                daysList.forEach(day => {
+                    const dayObj = classData[day];
+                    if (!dayObj) return;
+
+                    let groupsHtml = '';
+                    dayObj.groups.forEach((group, gIdx) => {
+                        let studentsTags = group.students.map((st, sIdx) => `
+                            <span class="inline-flex items-center gap-1.5 bg-white dark:bg-slate-900 border border-slate-200/85 dark:border-slate-700 px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 shadow-xs">
+                                ${st}
+                                <button onclick="deleteStudent('${className}', '${day}', ${gIdx}, ${sIdx})" class="text-rose-500 hover:text-rose-700 text-xs ml-1 transition"><i class="fa-solid fa-xmark"></i></button>
+                            </span>
+                        `).join('');
+
+                        groupsHtml += `
+                            <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-extrabold text-xs text-emerald-900 dark:text-emerald-300">${group.name}</span>
+                                    <button onclick="openAddStudentModal('${className}', '${day}', ${gIdx})" class="text-emerald-700 dark:text-emerald-300 hover:text-emerald-800 text-xs font-extrabold flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 px-3.5 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-800 transition">
+                                        <i class="fa-solid fa-user-plus"></i> Tambah Siswa
+                                    </button>
+                                </div>
+                                <div class="flex flex-wrap gap-1.5 pt-1">
+                                    ${studentsTags || '<span class="text-xs text-slate-400">Belum ada siswa</span>'}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    daysHtml += `
+                        <div class="space-y-2.5">
+                            <h5 class="text-xs font-extrabold uppercase tracking-wider text-slate-600 dark:text-slate-300 bg-emerald-100/60 dark:bg-emerald-950/60 px-4 py-2 rounded-xl">${day}</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${groupsHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+                        <div class="flex items-center gap-3.5">
+                            <div class="bg-emerald-600 text-white p-3 rounded-2xl shadow-sm"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <h3 class="font-extrabold text-slate-900 dark:text-slate-100 text-base sm:text-lg">${className}</h3>
+                        </div>
+                        ${Object.keys(classesData).length > 1 ? `
+                            <button onclick="deleteClass('${className}')" class="text-rose-600 hover:text-rose-700 text-xs font-bold flex items-center gap-1.5 bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 px-4 py-2.5 rounded-2xl border border-rose-200 dark:border-rose-900 transition">
+                                <i class="fa-solid fa-trash"></i> Hapus Kelas
+                            </button>
+                        ` : ''}
+                    </div>
+                    <div class="space-y-6 pt-2">
+                        ${daysHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function resetToDefaultData() {
+            if (confirm("Yakin ingin mereset seluruh data kelas dan siswa kembali ke pengaturan awal standar?")) {
+                localStorage.removeItem('murojaah_classes_data_v11');
+                classesData = JSON.parse(JSON.stringify(defaultClassesData));
+                populateClassStudents("Kelas Ali", aliStudents);
+                populateClassStudents("Kelas Zubair", zubairStudents);
+                populateClassStudents("Kelas Utsman", ustmanStudents);
+                activeClassName = Object.keys(classesData)[0];
+                renderClassSelector();
+                renderClassesManagement();
+                renderDayContent(activeDay);
+                showModal("Berhasil", "Data berhasil di-reset ke setelan awal.");
+            }
+        }
+
+        function openAddClassModal() {
+            document.getElementById('new-class-name-input').value = '';
+            document.getElementById('class-modal').classList.remove('hidden');
+        }
+
+        function closeAddClassModal() {
+            document.getElementById('class-modal').classList.add('hidden');
+        }
+
+        function saveNewClass() {
+            const name = document.getElementById('new-class-name-input').value.trim();
+            if (!name) {
+                showModal("Peringatan", "Nama kelas tidak boleh kosong.");
+                return;
+            }
+            if (classesData[name]) {
+                showModal("Peringatan", "Kelas dengan nama tersebut sudah ada.");
+                return;
+            }
+
+            const templateClass = Object.values(classesData)[0];
+            classesData[name] = JSON.parse(JSON.stringify(templateClass));
+            
+            localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+            closeAddClassModal();
+            renderClassSelector();
+            renderClassesManagement();
+            showModal("Berhasil", `Kelas "${name}" berhasil ditambahkan.`);
+        }
+
+        function deleteClass(className) {
+            if (Object.keys(classesData).length <= 1) {
+                showModal("Tidak Dapat Menghapus", "Minimal harus ada 1 kelas aktif.");
+                return;
+            }
+            if (confirm(`Yakin ingin menghapus ${className}?`)) {
+                delete classesData[className];
+                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                activeClassName = Object.keys(classesData)[0];
+                renderClassSelector();
+                renderClassesManagement();
+                renderDayContent(activeDay);
+                showModal("Berhasil", "Kelas berhasil dihapus.");
+            }
+        }
+
+        function openAddStudentModal(className, day, groupIndex) {
+            targetGroupForAdd = { className, day, groupIndex };
+            document.getElementById('new-student-name-input').value = '';
+            document.getElementById('student-modal-subtitle').innerText = `Menambah siswa ke ${className} - ${day}`;
+            document.getElementById('student-modal').classList.remove('hidden');
+        }
+
+        function closeAddStudentModal() {
+            document.getElementById('student-modal').classList.add('hidden');
+        }
+
+        function saveNewStudent() {
+            const studentName = document.getElementById('new-student-name-input').value.trim();
+            if (!studentName) {
+                showModal("Peringatan", "Nama siswa tidak boleh kosong.");
+                return;
+            }
+
+            const { className, day, groupIndex } = targetGroupForAdd;
+            if (classesData[className] && classesData[className][day]) {
+                classesData[className][day].groups[groupIndex].students.push(studentName);
+                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                closeAddStudentModal();
+                renderClassesManagement();
+                renderDayContent(activeDay);
+                showModal("Berhasil", `Siswa "${studentName}" berhasil ditambahkan.`);
+            }
+        }
+
+        function deleteStudent(className, day, groupIndex, studentIndex) {
+            if (confirm("Yakin ingin menghapus siswa ini dari kelompok?")) {
+                classesData[className][day].groups[groupIndex].students.splice(studentIndex, 1);
+                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                renderClassesManagement();
+                renderDayContent(activeDay);
+            }
+        }
+
+        function initRecapFilters() {
+            const today = new Date().toISOString().split('T')[0];
+            const pastWeek = new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0];
+            document.getElementById('filter-start-date').value = pastWeek;
+            document.getElementById('filter-end-date').value = today;
+        }
+
+        function applyDateFilter() {
+            renderRecapTable();
+        }
+
+        function resetDateFilter() {
+            initRecapFilters();
+            renderRecapTable();
+        }
+
+        function renderRecapTable() {
+            const startDate = document.getElementById('filter-start-date').value;
+            const endDate = document.getElementById('filter-end-date').value;
+            
+            const tbody = document.getElementById('recap-table-body');
+            tbody.innerHTML = '';
+
+            const filtered = historyLogs.filter(h => {
+                if (!startDate || !endDate) return true;
+                return h.date >= startDate && h.date <= endDate;
+            });
+
+            let totalCompletedCount = 0;
+            let totalPossibleCount = 0;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400 text-xs font-medium">Belum ada data catatan muroja'ah pada rentang tanggal ini.</td></tr>`;
+            } else {
+                filtered.forEach(log => {
+                    const classObj = classesData[log.className];
+                    const dataDay = classObj ? classObj[log.day] : null;
+                    let totalStudentsInDay = 0;
+                    if (dataDay) {
+                        dataDay.groups.forEach(g => totalStudentsInDay += g.students.length);
+                    }
+                    totalPossibleCount += totalStudentsInDay;
+                    totalCompletedCount += log.completedStudents.length;
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/60 transition";
+                    tr.innerHTML = `
+                        <td class="p-4 font-bold text-slate-800 dark:text-slate-200">${log.date}<br><span class="text-[11px] text-emerald-700 dark:text-emerald-400 font-extrabold">${log.day}</span></td>
+                        <td class="p-4 text-slate-600 dark:text-slate-300"><span class="font-extrabold text-slate-900 dark:text-slate-100">${log.className}</span></td>
+                        <td class="p-4"><span class="bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 px-3 py-1.5 rounded-xl font-extrabold text-xs">${log.completedStudents.length} Siswa</span></td>
+                        <td class="p-4"><span class="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-xl font-extrabold text-xs">${totalStudentsInDay - log.completedStudents.length} Siswa</span></td>
+                        <td class="p-4">
+                            <button onclick="viewDetailLog('${log.date}', '${log.day}', '${log.className}')" class="text-emerald-700 dark:text-emerald-300 hover:text-emerald-900 dark:hover:text-white font-extrabold text-xs flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/60 px-3.5 py-2 rounded-xl border border-emerald-200 dark:border-emerald-800 transition">
+                                <i class="fa-solid fa-eye"></i> Detail
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('stat-total-sessions').innerText = filtered.length;
+            document.getElementById('stat-total-completed').innerText = totalCompletedCount;
+            const avgRate = totalPossibleCount > 0 ? Math.round((totalCompletedCount / totalPossibleCount) * 100) : 0;
+            document.getElementById('stat-avg-rate').innerText = `${avgRate}%`;
+        }
+
+        function viewDetailLog(date, day, className) {
+            const log = historyLogs.find(h => h.date === date && h.day === day && h.className === className);
+            if (!log) return;
+            const classObj = classesData[className];
+            const dataDay = classObj ? classObj[day] : null;
+            let allStudents = [];
+            if (dataDay) {
+                dataDay.groups.forEach(g => allStudents = allStudents.concat(g.students));
+            }
+
+            const msg = `Kelas: ${className}\nTanggal: ${date} (${day})\n\nSelesai (${log.completedStudents.length}):\n${log.completedStudents.join(', ') || '-'}\n\nBelum Selesai:\n${allStudents.filter(s => !log.completedStudents.includes(s)).join(', ') || '-'}`;
+            showModal(`Detail Muroja'ah - ${date} (${day})`, msg);
+        }
+
+        function renderLeaderboard() {
+            let studentCounts = {};
+            const classObj = classesData[activeClassName];
+            if (!classObj) return;
+
+            Object.values(classObj).forEach(dayObj => {
+                dayObj.groups.forEach(g => {
+                    g.students.forEach(st => {
+                        if (!studentCounts[st]) studentCounts[st] = 0;
+                    });
+                });
+            });
+
+            historyLogs.filter(h => h.className === activeClassName).forEach(log => {
+                log.completedStudents.forEach(st => {
+                    if (studentCounts[st] !== undefined) {
+                        studentCounts[st] += 1;
+                    } else {
+                        studentCounts[st] = 1;
+                    }
+                });
+            });
+
+            let sortedStudents = Object.keys(studentCounts).map(name => {
+                return { name, count: studentCounts[name] };
+            }).sort((a, b) => b.count - a.count);
+
+            const container = document.getElementById('leaderboard-container');
+            container.innerHTML = '';
+
+            if (sortedStudents.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center text-slate-400 py-10 text-xs font-semibold">Belum ada data setoran santri di ${activeClassName}.</div>`;
+                return;
+            }
+
+            let listHtml = `<div class="space-y-4"><h3 class="font-extrabold text-xs text-slate-400 uppercase tracking-wider mb-2">Peringkat Santri Paling Rajin (${activeClassName})</h3><div class="space-y-3">`;
+            
+            sortedStudents.forEach((item, idx) => {
+                let medalColor = "bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700";
+                if (idx === 0) medalColor = "bg-amber-50/80 dark:bg-amber-950/40 text-amber-900 dark:text-amber-200 border-amber-300 dark:border-amber-800 font-extrabold shadow-xs";
+                else if (idx === 1) medalColor = "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-700 font-bold";
+                else if (idx === 2) medalColor = "bg-amber-100/40 dark:bg-amber-950/20 text-amber-950 dark:text-amber-300 border-amber-200 dark:border-amber-800";
+
+                listHtml += `
+                    <div class="flex items-center justify-between p-4 rounded-2xl border ${medalColor} transition">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-8 h-8 rounded-xl flex items-center justify-center text-xs font-extrabold ${idx === 0 ? 'bg-amber-500 text-white shadow-sm' : idx === 1 ? 'bg-slate-400 text-white' : idx === 2 ? 'bg-amber-700 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
+                                ${idx + 1}
+                            </div>
+                            <span class="text-xs md:text-sm text-slate-900 dark:text-slate-100 font-bold">${item.name}</span>
+                        </div>
+                        <div class="text-xs font-extrabold px-3.5 py-1.5 rounded-xl bg-white dark:bg-slate-900 shadow-xs text-emerald-800 dark:text-emerald-300 border border-emerald-100 dark:border-emerald-900">
+                            ${item.count} Sesi Selesai
+                        </div>
+                    </div>
+                `;
+            });
+            listHtml += `</div></div>`;
+
+            let topStudent = sortedStudents[0];
+            let spotlightHtml = `
+                <div class="bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-900 dark:from-slate-900 dark:via-emerald-950 dark:to-slate-900 text-white p-6 md:p-8 rounded-3xl shadow-xl flex flex-col justify-between space-y-6 border border-emerald-500/30 dark:border-slate-800">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-white/20 dark:bg-slate-800 text-emerald-100 text-xs px-4 py-1.5 rounded-full font-extrabold mb-4 backdrop-blur-md border border-white/20 dark:border-slate-700 shadow-inner">
+                            <i class="fa-solid fa-star text-amber-300"></i> Santri Teladan Teraktif
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-extrabold tracking-tight">${topStudent ? topStudent.name : '-'}</h3>
+                        <p class="text-xs text-emerald-100 dark:text-emerald-300/80 mt-2 font-medium">Santri dengan akumulasi penyelesaian muroja'ah manzili terbanyak di ${activeClassName}.</p>
+                    </div>
+                    <div class="bg-white/10 dark:bg-slate-800 p-4.5 rounded-2xl backdrop-blur-md flex items-center justify-between border border-white/20 dark:border-slate-700 shadow-inner">
+                        <span class="text-xs font-bold text-emerald-200">Total Setoran Selesai:</span>
+                        <span class="text-2xl font-extrabold text-white">${topStudent ? topStudent.count : 0} Sesi</span>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = listHtml + spotlightHtml;
+        }
+
+        function showModal(title, msg) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = msg;
+            document.getElementById('custom-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
