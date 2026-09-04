@@ -867,7 +867,7 @@
 
         const daysList = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"];
 
-        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v12') || JSON.stringify(defaultClassesData));
+        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v13') || JSON.stringify(defaultClassesData));
         let activeClassName = Object.keys(classesData)[0] || "Kelas Abu Abdurrahman";
         
         function getTodayIndonesianName() {
@@ -877,8 +877,8 @@
         }
 
         let activeDay = getTodayIndonesianName();
-        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v12') || '{}');
-        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v12') || '[]');
+        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v13') || '{}');
+        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v13') || '[]');
 
         let targetGroupForAdd = { day: null, groupIndex: null };
 
@@ -1024,7 +1024,7 @@
                         <label class="flex items-center justify-between p-3.5 rounded-2xl border ${isChecked ? 'bg-emerald-50/70 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 shadow-xs' : 'bg-slate-50/80 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/80'} hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-all cursor-pointer">
                             <div class="flex items-center space-x-3.5">
                                 <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleCheck('${storageKey}', '${day}', ${gIdx}, '${student.replace(/'/g, "\\'")}')" class="w-4.5 h-4.5 text-emerald-600 rounded-lg border-slate-300 dark:border-slate-600 focus:ring-emerald-500 cursor-pointer">
-                                <span class="text-xs md:text-sm font-bold ${isChecked ? 'text-emerald-950 dark:text-emerald-200 line-through opacity-85' : 'text-slate-700 dark:text-slate-200'}">${student}</span>
+                                <span class="text-xs md:text-sm font-bold ${isChecked ? 'text-emerald-950 dark:text-emerald-200 opacity-95' : 'text-slate-700 dark:text-slate-200'}">${student}</span>
                             </div>
                             <span class="text-[10px] px-2.5 py-1 rounded-xl font-extrabold tracking-wide uppercase flex-shrink-0 ${isChecked ? 'bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100 shadow-xs' : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'}">
                                 ${isChecked ? 'Selesai' : 'Belum'}
@@ -1056,7 +1056,7 @@
         function toggleCheck(storageKey, day, gIdx, studentName) {
             const isChecked = event.target.checked;
             checklistState[storageKey] = isChecked;
-            localStorage.setItem('murojaah_checklist_state_v12', JSON.stringify(checklistState));
+            localStorage.setItem('murojaah_checklist_state_v13', JSON.stringify(checklistState));
 
             const dateKey = getFormattedDateKey();
             let historyEntry = historyLogs.find(h => h.date === dateKey && h.day === day && h.className === activeClassName);
@@ -1072,7 +1072,7 @@
             } else {
                 historyEntry.completedStudents = historyEntry.completedStudents.filter(s => s !== studentName);
             }
-            localStorage.setItem('murojaah_history_logs_v12', JSON.stringify(historyLogs));
+            localStorage.setItem('murojaah_history_logs_v13', JSON.stringify(historyLogs));
 
             renderDayContent(day);
         }
@@ -1336,9 +1336,9 @@
 
         function resetToDefaultData() {
             if (confirm("Yakin ingin mereset seluruh data kelas dan siswa kembali ke pengaturan awal standar?")) {
-                localStorage.removeItem('murojaah_classes_data_v12');
-                localStorage.removeItem('murojaah_checklist_state_v12');
-                localStorage.removeItem('murojaah_history_logs_v12');
+                localStorage.removeItem('murojaah_classes_data_v13');
+                localStorage.removeItem('murojaah_checklist_state_v13');
+                localStorage.removeItem('murojaah_history_logs_v13');
                 classesData = JSON.parse(JSON.stringify(defaultClassesData));
                 populateClassStudents("Kelas Ali", aliStudents);
                 populateClassStudents("Kelas Zubair", zubairStudents);
@@ -1374,7 +1374,7 @@
             const templateClass = Object.values(classesData)[0];
             classesData[name] = JSON.parse(JSON.stringify(templateClass));
             
-            localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
+            localStorage.setItem('murojaah_classes_data_v13', JSON.stringify(classesData));
             closeAddClassModal();
             renderClassSelector();
             renderClassesManagement();
@@ -1388,7 +1388,7 @@
             }
             if (confirm(`Yakin ingin menghapus ${className}?`)) {
                 delete classesData[className];
-                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v13', JSON.stringify(classesData));
                 activeClassName = Object.keys(classesData)[0];
                 renderClassSelector();
                 renderClassesManagement();
@@ -1418,7 +1418,7 @@
             const { className, day, groupIndex } = targetGroupForAdd;
             if (classesData[className] && classesData[className][day]) {
                 classesData[className][day].groups[groupIndex].students.push(studentName);
-                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v13', JSON.stringify(classesData));
                 closeAddStudentModal();
                 renderClassesManagement();
                 renderDayContent(activeDay);
@@ -1429,7 +1429,7 @@
         function deleteStudent(className, day, groupIndex, studentIndex) {
             if (confirm("Yakin ingin menghapus siswa ini dari kelompok?")) {
                 classesData[className][day].groups[groupIndex].students.splice(studentIndex, 1);
-                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v13', JSON.stringify(classesData));
                 renderClassesManagement();
                 renderDayContent(activeDay);
             }
