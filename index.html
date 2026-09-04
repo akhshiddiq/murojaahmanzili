@@ -45,7 +45,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center space-x-3.5 w-full md:w-auto justify-between md:justify-start">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-white/10 dark:bg-slate-800/60 backdrop-blur-md p-3 rounded-2xl border border-white/20 shadow-inner">
+                    <div class="bg-white/10 dark:bg-slate-800/60 backdrop-blur-md p-3 rounded-2xl border border-white/25 shadow-inner">
                         <i class="fa-solid fa-quran text-xl md:text-2xl text-emerald-300"></i>
                     </div>
                     <div>
@@ -54,7 +54,7 @@
                     </div>
                 </div>
                 <!-- Dark Mode Toggle Mobile -->
-                <button onclick="toggleDarkMode()" class="md:hidden bg-white/10 hover:bg-white/20 dark:bg-slate-800 p-2.5 rounded-xl border border-white/20 text-emerald-200 transition-all flex items-center justify-center shadow-sm" title="Ganti Mode Terang/Gelap">
+                <button onclick="toggleDarkMode()" class="md:hidden bg-white/10 hover:bg-white/20 dark:bg-slate-800 p-2.5 rounded-xl border border-white/25 text-emerald-200 transition-all flex items-center justify-center shadow-sm" title="Ganti Mode Terang/Gelap">
                     <i id="theme-icon-mobile" class="fa-solid fa-moon text-sm"></i>
                 </button>
             </div>
@@ -80,7 +80,7 @@
                 </nav>
                 
                 <!-- Dark Mode Toggle Desktop -->
-                <button onclick="toggleDarkMode()" class="hidden md:flex bg-white/10 hover:bg-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 p-3 rounded-2xl border border-white/20 dark:border-slate-700 text-emerald-200 transition-all items-center justify-center shadow-sm flex-shrink-0" title="Ganti Mode Terang/Gelap">
+                <button onclick="toggleDarkMode()" class="hidden md:flex bg-white/10 hover:bg-white/20 dark:bg-slate-800 dark:hover:bg-slate-700 p-3 rounded-2xl border border-white/25 dark:border-slate-700 text-emerald-200 transition-all items-center justify-center shadow-sm flex-shrink-0" title="Ganti Mode Terang/Gelap">
                     <i id="theme-icon-desktop" class="fa-solid fa-moon text-sm"></i>
                 </button>
             </div>
@@ -402,15 +402,24 @@
     <script>
         // --- CURRICULUMS & TEMPLATES ---
 
-        const aliTemplate = {
+        const abuAbdurrahmanTemplate = {
             "Senin": {
                 title: "Hari Senin",
-                headerNote: "Bismillah berikut muroja'ah dirumah hari ini (4 hal/hari)",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
                 groups: [
                     {
-                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
-                        surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
-                        students: []
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                            "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Sudah hafal -+ 1 Juz",
+                        surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
@@ -419,9 +428,18 @@
                 headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
                 groups: [
                     {
-                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                            "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Sudah hafal -+ 1 Juz",
                         surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
-                        students: []
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
@@ -430,42 +448,80 @@
                 headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
                 groups: [
                     {
-                        name: "🟦 Rabu yg sudah hafal -+ 1 Juz",
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                            "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Sudah hafal -+ 1 Juz",
                         surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
-                        students: []
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
             "Kamis": {
                 title: "Hari Kamis",
-                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
                 groups: [
                     {
                         name: "🟦 Al Bayyinah s.d At Tiin",
                         surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
-                        students: []
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                            "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
+                        surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
             "Jum'at": {
                 title: "Hari Jum'at",
-                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
                 groups: [
                     {
                         name: "🟦 Al Insyirah s.d Al Lail",
                         surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
-                        students: []
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan ( kembali ke annas lagi ya )",
+                            "Defrand Augustav Muttaqin ( kembali ke annas lagi ya )", "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Hafalan Lain",
+                        surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
             "Sabtu": {
                 title: "Hari Sabtu",
-                headerNote: "Bismillah berikut tugas muroja'ah Manzili (4 hal/hari)",
+                headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
                 groups: [
                     {
-                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
-                        surah: "Abasa s.d Annaziat\n- Abasa 2x\n- Annaziat 2x\nAl Muthaffifin s.d Abasa",
-                        students: []
+                        name: "🟦 Asy Syams s.d Al Balad",
+                        surah: "Surat Al-Balad 3x\nAsy-Syams 3x",
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka",
+                            "Muhammad Tristan Arka Santosa ( kembali lagi ke annas ya )", "Khanza Almira",
+                            "Keenan Arkana Ramadhan Setiawan ( kembali lagi ke annas ya )",
+                            "Defrand Augustav Muttaqin ( kembali lagi ke annas ya )", "Naufal Giebran Jayadi",
+                            "Sabran Nur Awal ( kembali lagi ke annas ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 Abasa s.d Annaziat",
+                        surah: "Abasa 2x\nAnnaziat 2x",
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             },
@@ -474,9 +530,18 @@
                 headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
                 groups: [
                     {
-                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "Al Fajr 2x",
+                        students: [
+                            "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
+                            "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
+                            "Naufal Giebran Jayadi", "Sabran Nur Awal"
+                        ]
+                    },
+                    {
+                        name: "🟦 Sudah hafal -+ 1 Juz",
                         surah: "An Naba 2x",
-                        students: []
+                        students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
                     }
                 ]
             }
@@ -658,195 +723,105 @@
             }
         };
 
-        const defaultClassesData = {
-            "Kelas Abu Abdurrahman": {
-                "Senin": {
-                    title: "Hari Senin",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
-                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Sudah hafal -+ 1 Juz",
-                            surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Selasa": {
-                    title: "Hari Selasa",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
-                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Sudah hafal -+ 1 Juz",
-                            surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Rabu": {
-                    title: "Hari Rabu",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
-                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Sudah hafal -+ 1 Juz",
-                            surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Kamis": {
-                    title: "Hari Kamis",
-                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
-                    groups: [
-                        {
-                            name: "🟦 Al Bayyinah s.d At Tiin",
-                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
-                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
-                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Jum'at": {
-                    title: "Hari Jum'at",
-                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
-                    groups: [
-                        {
-                            name: "🟦 Al Insyirah s.d Al Lail",
-                            surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan ( kembali ke annas lagi ya )",
-                                "Defrand Augustav Muttaqin ( kembali ke annas lagi ya )", "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Hafalan Lain",
-                            surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Sabtu": {
-                    title: "Hari Sabtu",
-                    headerNote: "Bismillah berikut tugas muroja'ah Manzili Kelas",
-                    groups: [
-                        {
-                            name: "🟦 Asy Syams s.d Al Balad",
-                            surah: "Surat Al-Balad 3x\nAsy-Syams 3x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka",
-                                "Muhammad Tristan Arka Santosa ( kembali lagi ke annas ya )", "Khanza Almira",
-                                "Keenan Arkana Ramadhan Setiawan ( kembali lagi ke annas ya )",
-                                "Defrand Augustav Muttaqin ( kembali lagi ke annas ya )", "Naufal Giebran Jayadi",
-                                "Sabran Nur Awal ( kembali lagi ke annas ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 Abasa s.d Annaziat",
-                            surah: "Abasa 2x\nAnnaziat 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                },
-                "Ahad": {
-                    title: "Hari Ahad",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "Al Fajr 2x",
-                            students: [
-                                "Alfatih Ahmad Badawi", "Muhammad Atthaya Azka", "Muhammad Tristan Arka Santosa",
-                                "Khanza Almira", "Keenan Arkana Ramadhan Setiawan", "Defrand Augustav Muttaqin",
-                                "Naufal Giebran Jayadi", "Sabran Nur Awal"
-                            ]
-                        },
-                        {
-                            name: "🟦 Sudah hafal -+ 1 Juz",
-                            surah: "An Naba 2x",
-                            students: ["Atthar Raffasya Alghifari", "Muhammad Rasyidd Albarr"]
-                        }
-                    ]
-                }
+        const aliTemplate = {
+            "Senin": {
+                title: "Hari Senin",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini (4 hal/hari)",
+                groups: [
+                    {
+                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
+                        surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: []
+                    }
+                ]
             },
+            "Selasa": {
+                title: "Hari Selasa",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Rabu": {
+                title: "Hari Rabu",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Rabu yg sudah hafal -+ 1 Juz",
+                        surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Kamis": {
+                title: "Hari Kamis",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Bayyinah s.d At Tiin",
+                        surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Jum'at": {
+                title: "Hari Jum'at",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Insyirah s.d Al Lail",
+                        surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
+                        students: []
+                    }
+                ]
+            },
+            "Sabtu": {
+                title: "Hari Sabtu",
+                headerNote: "Bismillah berikut tugas muroja'ah Manzili (4 hal/hari)",
+                groups: [
+                    {
+                        name: "🟦 Untuk yang sudah hafalan 1 Juz",
+                        surah: "Abasa s.d Annaziat\n- Abasa 2x\n- Annaziat 2x\nAl Muthaffifin s.d Abasa",
+                        students: []
+                    }
+                ]
+            },
+            "Ahad": {
+                title: "Hari Ahad",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "An Naba 2x",
+                        students: []
+                    }
+                ]
+            }
+        };
+
+        const omarTemplate = {
+            "Senin": { title: "Hari Senin", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x", students: ["Omar"] }] },
+            "Selasa": { title: "Hari Selasa", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x", students: ["Omar"] }] },
+            "Rabu": { title: "Hari Rabu", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x", students: ["Omar"] }] },
+            "Kamis": { title: "Hari Kamis", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x", students: ["Omar"] }] },
+            "Jum'at": { title: "Hari Jum'at", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x", students: ["Omar"] }] },
+            "Sabtu": { title: "Hari Sabtu", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Surat Al-Balad 3x\nAsy-Syams 3x", students: ["Omar"] }] },
+            "Ahad": { title: "Hari Ahad", headerNote: "Bismillah berikut muroja'ah dirumah hari ini", groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al Fajr 2x", students: ["Omar"] }] }
+        };
+
+        const defaultClassesData = {
+            "Kelas Abu Abdurrahman": JSON.parse(JSON.stringify(abuAbdurrahmanTemplate)),
             "Kelas Abu Ubaidah": JSON.parse(JSON.stringify(abuUbaidahTemplate)),
             "Kelas Ali": JSON.parse(JSON.stringify(aliTemplate)),
             "Kelas Zubair": JSON.parse(JSON.stringify(aliTemplate)),
             "Kelas Utsman": JSON.parse(JSON.stringify(aliTemplate)),
-            "Kelas Omar": {
-                "Senin": {
-                    title: "Hari Senin",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x\nAn-Nasr 2x\nAl-Kafirun 2x", students: ["Omar"] }]
-                },
-                "Selasa": {
-                    title: "Hari Selasa",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x", students: ["Omar"] }]
-                },
-                "Rabu": {
-                    title: "Hari Rabu",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x", students: ["Omar"] }]
-                },
-                "Kamis": {
-                    title: "Hari Kamis",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x", students: ["Omar"] }]
-                },
-                "Jum'at": {
-                    title: "Hari Jum'at",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x", students: ["Omar"] }]
-                },
-                "Sabtu": {
-                    title: "Hari Sabtu",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Surat Al-Balad 3x\nAsy-Syams 3x", students: ["Omar"] }]
-                },
-                "Ahad": {
-                    title: "Hari Ahad",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [{ name: "🟦 -+ 1/2 Juz", surah: "Al Fajr 2x", students: ["Omar"] }]
-                }
-            }
+            "Kelas Omar": JSON.parse(JSON.stringify(omarTemplate))
         };
 
-        // Student lists mapping
         const aliStudents = ["Muhamad Yudanta Irham", "Ahsan Ruzain Ramadhan", "Ihsan Hamizan Ramadhan", "Muhammad Yusuf Wiranatanagara", "Muhammad Auris Hilmi Ilham"];
         const zubairStudents = ["Alesha Assyabiya", "Yumna Kamidia Rinjani", "Almira Azzalea", "Calista Naura Salsabila", "Alya Zahirah"];
         const ustmanStudents = ["Muhamad Yudanta Irham", "Alzam Irawan", "Qianno Kenzie Hamizan", "Fathir Santosa"];
@@ -867,7 +842,7 @@
 
         const daysList = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"];
 
-        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v14') || JSON.stringify(defaultClassesData));
+        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v16') || JSON.stringify(defaultClassesData));
         let activeClassName = Object.keys(classesData)[0] || "Kelas Abu Abdurrahman";
         
         function getTodayIndonesianName() {
@@ -877,8 +852,8 @@
         }
 
         let activeDay = getTodayIndonesianName();
-        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v14') || '{}');
-        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v14') || '[]');
+        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v16') || '{}');
+        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v16') || '[]');
 
         let targetGroupForAdd = { day: null, groupIndex: null };
 
@@ -1056,7 +1031,7 @@
         function toggleCheck(storageKey, day, gIdx, studentName) {
             const isChecked = event.target.checked;
             checklistState[storageKey] = isChecked;
-            localStorage.setItem('murojaah_checklist_state_v14', JSON.stringify(checklistState));
+            localStorage.setItem('murojaah_checklist_state_v16', JSON.stringify(checklistState));
 
             const dateKey = getFormattedDateKey();
             let historyEntry = historyLogs.find(h => h.date === dateKey && h.day === day && h.className === activeClassName);
@@ -1072,7 +1047,7 @@
             } else {
                 historyEntry.completedStudents = historyEntry.completedStudents.filter(s => s !== studentName);
             }
-            localStorage.setItem('murojaah_history_logs_v14', JSON.stringify(historyLogs));
+            localStorage.setItem('murojaah_history_logs_v16', JSON.stringify(historyLogs));
 
             renderDayContent(day);
         }
@@ -1336,9 +1311,9 @@
 
         function resetToDefaultData() {
             if (confirm("Yakin ingin mereset seluruh data kelas dan siswa kembali ke pengaturan awal standar?")) {
-                localStorage.removeItem('murojaah_classes_data_v14');
-                localStorage.removeItem('murojaah_checklist_state_v14');
-                localStorage.removeItem('murojaah_history_logs_v14');
+                localStorage.removeItem('murojaah_classes_data_v16');
+                localStorage.removeItem('murojaah_checklist_state_v16');
+                localStorage.removeItem('murojaah_history_logs_v16');
                 classesData = JSON.parse(JSON.stringify(defaultClassesData));
                 populateClassStudents("Kelas Ali", aliStudents);
                 populateClassStudents("Kelas Zubair", zubairStudents);
@@ -1374,7 +1349,7 @@
             const templateClass = Object.values(classesData)[0];
             classesData[name] = JSON.parse(JSON.stringify(templateClass));
             
-            localStorage.setItem('murojaah_classes_data_v14', JSON.stringify(classesData));
+            localStorage.setItem('murojaah_classes_data_v16', JSON.stringify(classesData));
             closeAddClassModal();
             renderClassSelector();
             renderClassesManagement();
@@ -1388,7 +1363,7 @@
             }
             if (confirm(`Yakin ingin menghapus ${className}?`)) {
                 delete classesData[className];
-                localStorage.setItem('murojaah_classes_data_v14', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v16', JSON.stringify(classesData));
                 activeClassName = Object.keys(classesData)[0];
                 renderClassSelector();
                 renderClassesManagement();
@@ -1418,7 +1393,7 @@
             const { className, day, groupIndex } = targetGroupForAdd;
             if (classesData[className] && classesData[className][day]) {
                 classesData[className][day].groups[groupIndex].students.push(studentName);
-                localStorage.setItem('murojaah_classes_data_v14', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v16', JSON.stringify(classesData));
                 closeAddStudentModal();
                 renderClassesManagement();
                 renderDayContent(activeDay);
@@ -1429,7 +1404,7 @@
         function deleteStudent(className, day, groupIndex, studentIndex) {
             if (confirm("Yakin ingin menghapus siswa ini dari kelompok?")) {
                 classesData[className][day].groups[groupIndex].students.splice(studentIndex, 1);
-                localStorage.setItem('murojaah_classes_data_v14', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v16', JSON.stringify(classesData));
                 renderClassesManagement();
                 renderDayContent(activeDay);
             }
