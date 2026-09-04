@@ -74,6 +74,9 @@
                     <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-xl text-emerald-100 hover:bg-emerald-800/60 dark:hover:bg-slate-800 transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
                         <i class="fa-solid fa-trophy text-amber-300"></i> Peringkat Rajin
                     </button>
+                    <button onclick="switchTab('sync')" id="nav-sync" class="px-4 py-2.5 text-xs md:text-sm font-semibold rounded-xl text-emerald-100 hover:bg-emerald-800/60 dark:hover:bg-slate-800 transition-all flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up text-sky-300"></i> Cloud Sync & Reset Memori
+                    </button>
                 </nav>
                 
                 <!-- Dark Mode Toggle Desktop -->
@@ -163,7 +166,6 @@
             </div>
         </section>
 
-        <!-- TAB 2: MANAGE CLASSES & STUDENTS -->
         <section id="tab-classes" class="hidden space-y-6">
             <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
@@ -190,7 +192,6 @@
             </div>
         </section>
 
-        <!-- TAB 3: RECAP & HISTORY -->
         <section id="tab-recap" class="hidden space-y-6">
             <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
                 <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
@@ -258,7 +259,6 @@
             </div>
         </section>
 
-        <!-- TAB 4: LEADERBOARD -->
         <section id="tab-leaderboard" class="hidden space-y-6">
             <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-6">
@@ -280,6 +280,58 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="leaderboard-container">
                     <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-sync" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-800 space-y-6 transition-colors">
+                <div class="border-b border-slate-100 dark:border-slate-800 pb-6">
+                    <h2 class="text-base md:text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
+                        <i class="fa-solid fa-cloud-arrow-up text-sky-500"></i> Cloud Sync, Reset Memori & Aplikasi Terkait
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Kelola penyimpanan data lokal, cadangkan data, serta akses tautan aplikasi Rumah Qur'an lainnya.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Storage Actions Card -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                        <h3 class="font-extrabold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-database text-emerald-600"></i> Manajemen Data & Reset Memori
+                        </h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Data checklist dan riwayat disimpan di memori browser Anda (LocalStorage). Anda dapat melakukan reset ulang ke setelan awal jika diperlukan.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="resetToDefaultData()" class="bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-right"></i> Reset Memori / Default
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Related Apps Quick Access Card -->
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-5 sm:p-6 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+                        <h3 class="font-extrabold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                            <i class="fa-solid fa-link text-sky-600"></i> Web Terkait & Integrasi
+                        </h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Akses cepat ke aplikasi pendukung Rumah Qur'an:
+                        </p>
+                        <div class="space-y-2 pt-1">
+                            <a href="https://akhshiddiq.github.io/presensi-rq/" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xs">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-clipboard-user text-emerald-600"></i> Web Presensi</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i>
+                            </a>
+                            <a href="https://akhshiddiq.github.io/murojaahmanzili/" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xs">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-quran text-teal-600"></i> Web Tugas Muroja'ah Manzili</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i>
+                            </a>
+                            <a href="https://akhshiddiq.github.io/monitoring-tahfizh/" target="_blank" class="flex items-center justify-between p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 hover:border-emerald-500 transition text-xs font-bold text-slate-800 dark:text-slate-200 shadow-xs">
+                                <span class="flex items-center gap-2"><i class="fa-solid fa-book-open text-blue-600"></i> Web Monitoring Bacaan Hafalan</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -430,6 +482,182 @@
             }
         };
 
+        const abuUbaidahTemplate = {
+            "Senin": {
+                title: "Hari Senin",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
+                            "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
+                            "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
+                            "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
+                        ]
+                    },
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            },
+            "Selasa": {
+                title: "Hari Selasa",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
+                            "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
+                            "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
+                            "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                            "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            },
+            "Rabu": {
+                title: "Hari Rabu",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 -+ 1/2 juz",
+                        surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                            "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                            "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                            "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                            "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 yg sudah hafal -+ 1 Juz",
+                        surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            },
+            "Kamis": {
+                title: "Hari Kamis",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Bayyinah s.d At Tiin",
+                        surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                            "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                            "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                            "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                            "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
+                        surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            },
+            "Jum'at": {
+                title: "Hari Jum'at",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Insyirah s.d Al Lail",
+                        surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
+                            "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
+                            "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
+                            "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )", "Nabila Azalia Putri Aquilla",
+                            "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 Hafalan Lain",
+                        surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi"
+                        ]
+                    }
+                ]
+            },
+            "Sabtu": {
+                title: "Hari Sabtu",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Asy-Syams & Al-Balad",
+                        surah: "Asy-Syams\nAl-Balad",
+                        students: [
+                            "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
+                            "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
+                            "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
+                            "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
+                            "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
+                        ]
+                    },
+                    {
+                        name: "🟦 'Abasa & An-Nazi'at",
+                        surah: "'Abasa\nAn-Nazi'at",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            },
+            "Ahad": {
+                title: "Hari Ahad",
+                headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
+                groups: [
+                    {
+                        name: "🟦 Al Bayyinah s.d At Tiin",
+                        surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
+                        students: [
+                            "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
+                            "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
+                            "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
+                            "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
+                        ]
+                    },
+                    {
+                        name: "🟦 Al-Inshiqoq s.d Al-Ghashiyah",
+                        surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
+                        students: [
+                            "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
+                            "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
+                        ]
+                    }
+                ]
+            }
+        };
+
         const defaultClassesData = {
             "Kelas Abu Abdurrahman": {
                 "Senin": {
@@ -575,181 +803,7 @@
                     ]
                 }
             },
-            "Kelas Abu Ubaidah": {
-                "Senin": {
-                    title: "Hari Senin",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "An Nas s.d Al Kafirun\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
-                                "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
-                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
-                                "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
-                            ]
-                        },
-                        {
-                            name: "🟦 yg sudah hafal -+ 1 Juz",
-                            surah: "An Nas s.d Al Ashr\nAn-Nas 2x\nAl-Falaq 2x\nAl-Ikhlas 2x\nAl-Lahab 2x (Al-Masad) 2x\nAn-Nasr 2x\nAl-Kafirun 2x\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                },
-                "Selasa": {
-                    title: "Hari Selasa",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "Al-Kausar s.d Al-'Asr\nAl-Kausar 2x\nAl-Ma'un 2x\nQuraisy 2x\nAl-Fil 2x\nAl-Humazah 2x\nAl-'Asr 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
-                                "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
-                                "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
-                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
-                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 yg sudah hafal -+ 1 Juz",
-                            surah: "At-Takasur s.d At-Tin\nAt-Takasur 2x\nAl-Qari'ah 2x\nAl-'Adiyat 2x\nAz-Zalzalah 2x\nAl-Bayyinah 2x\nAl-Qadr 2x\nAl-'Alaq 2x\nAt-Tin 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                },
-                "Rabu": {
-                    title: "Hari Rabu",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 -+ 1/2 juz",
-                            surah: "At Takatsur s.d Az Zalzalah\nAz-Zalzalah 2x\nAl-'Adiyat 2x\nAl-Qari'ah 2x\nAt-Takasur 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
-                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
-                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
-                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
-                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 yg sudah hafal -+ 1 Juz",
-                            surah: "Al Insyirah s.d Al Fajr\nAl-Fajr 2x\nAl-Balad 2x\nAsy-Syams 2x\nAl-Lail 2x\nAd-Duha 2x\nAsy-Syarh (Al-Insyirah) 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                },
-                "Kamis": {
-                    title: "Hari Kamis",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 Al Bayyinah s.d At Tiin",
-                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
-                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
-                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
-                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
-                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 Al Ghasyiyah s.d Al Insyiqaq",
-                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                },
-                "Jum'at": {
-                    title: "Hari Jum'at",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 Al Insyirah s.d Al Lail",
-                            surah: "Al-Lail 2x\nAd-Duha 2x\nAsy-Syarh 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil ( dari Annas lagi ya )",
-                                "Riski Agung Zaki Hidayat ( dari Annas lagi ya )", "Sulthan Hutama ( dari Annas lagi ya )",
-                                "Arsya Altan Mutaqi ( dari Annas lagi ya )", "Abdurrahman Malik Ibrahim",
-                                "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )", "Nabila Azalia Putri Aquilla",
-                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 Hafalan Lain",
-                            surah: "'Abasa 2x\nAt-Takwir 2x\nAl-Infitar 2x\nAl-Mutaffifin 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi"
-                            ]
-                        }
-                    ]
-                },
-                "Sabtu": {
-                    title: "Hari Sabtu",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 Asy-Syams & Al-Balad",
-                            surah: "Asy-Syams\nAl-Balad",
-                            students: [
-                                "Farid Nahra Rafihi Dayat ( dari Annas lagi ya )", "Muhammad Bilal Faherzi ( dari Annas lagi ya )",
-                                "Satrio Abdul Jalil ( dari Annas lagi ya )", "Riski Agung Zaki Hidayat ( dari Annas lagi ya )",
-                                "Sulthan Hutama ( dari Annas lagi ya )", "Arsya Altan Mutaqi ( dari Annas lagi ya )",
-                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim ( dari Annas s.d Surat terakhir di stor ya )",
-                                "Marsha Adeeva Mezaluna", "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat ( dari Annas lagi ya )"
-                            ]
-                        },
-                        {
-                            name: "🟦 'Abasa & An-Nazi'at",
-                            surah: "'Abasa\nAn-Nazi'at",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                },
-                "Ahad": {
-                    title: "Hari Ahad",
-                    headerNote: "Bismillah berikut muroja'ah dirumah hari ini",
-                    groups: [
-                        {
-                            name: "🟦 Al Bayyinah s.d At Tiin",
-                            surah: "At-Tin 2x\nAl-'Alaq 2x\nAl-Qadr 2x\nAl-Bayyinah 2x",
-                            students: [
-                                "Farid Nahra Rafihi Dayat", "Muhammad Bilal Faherzi", "Satrio Abdul Jalil",
-                                "Riski Agung Zaki Hidayat", "Sulthan Hutama", "Arsya Altan Mutaqi",
-                                "Abdurrahman Malik Ibrahim", "Muhammad Syafiq Ibrahim", "Marsha Adeeva Mezaluna",
-                                "Haura Hanindya", "Randu Putra Bulian", "Riska Zakiyah Hidayat"
-                            ]
-                        },
-                        {
-                            name: "🟦 Al-Inshiqoq s.d Al-Ghashiyah",
-                            surah: "Al-Inshiqoq 2x\nAl-Buruj 2x\nAt-Tariq 2x\nAl-A'la 2x\nAl-Ghashiyah 2x",
-                            students: [
-                                "R. Tsabit Arsakha Mahdan", "Muhamad Zaid Khairul Ihsan", "Muhammad Irsyad Dirgantara",
-                                "Ahmad Khalafi Aulia", "Zarina Azzakia Putri Siwi", "Nabila Azalia Putri Aquilla"
-                            ]
-                        }
-                    ]
-                }
-            },
+            "Kelas Abu Ubaidah": JSON.parse(JSON.stringify(abuUbaidahTemplate)),
             "Kelas Ali": JSON.parse(JSON.stringify(aliTemplate)),
             "Kelas Zubair": JSON.parse(JSON.stringify(aliTemplate)),
             "Kelas Utsman": JSON.parse(JSON.stringify(aliTemplate)),
@@ -813,7 +867,7 @@
 
         const daysList = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Ahad"];
 
-        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v11') || JSON.stringify(defaultClassesData));
+        let classesData = JSON.parse(localStorage.getItem('murojaah_classes_data_v12') || JSON.stringify(defaultClassesData));
         let activeClassName = Object.keys(classesData)[0] || "Kelas Abu Abdurrahman";
         
         function getTodayIndonesianName() {
@@ -823,8 +877,8 @@
         }
 
         let activeDay = getTodayIndonesianName();
-        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v11') || '{}');
-        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v11') || '[]');
+        let checklistState = JSON.parse(localStorage.getItem('murojaah_checklist_state_v12') || '{}');
+        let historyLogs = JSON.parse(localStorage.getItem('murojaah_history_logs_v12') || '[]');
 
         let targetGroupForAdd = { day: null, groupIndex: null };
 
@@ -878,7 +932,7 @@
         }
 
         function switchTab(tabId) {
-            ['daily', 'classes', 'recap', 'leaderboard'].forEach(t => {
+            ['daily', 'classes', 'recap', 'leaderboard', 'sync'].forEach(t => {
                 const el = document.getElementById(`tab-${t}`);
                 if (el) el.classList.add('hidden');
                 const nav = document.getElementById(`nav-${t}`);
@@ -1002,7 +1056,7 @@
         function toggleCheck(storageKey, day, gIdx, studentName) {
             const isChecked = event.target.checked;
             checklistState[storageKey] = isChecked;
-            localStorage.setItem('murojaah_checklist_state_v11', JSON.stringify(checklistState));
+            localStorage.setItem('murojaah_checklist_state_v12', JSON.stringify(checklistState));
 
             const dateKey = getFormattedDateKey();
             let historyEntry = historyLogs.find(h => h.date === dateKey && h.day === day && h.className === activeClassName);
@@ -1018,7 +1072,7 @@
             } else {
                 historyEntry.completedStudents = historyEntry.completedStudents.filter(s => s !== studentName);
             }
-            localStorage.setItem('murojaah_history_logs_v11', JSON.stringify(historyLogs));
+            localStorage.setItem('murojaah_history_logs_v12', JSON.stringify(historyLogs));
 
             renderDayContent(day);
         }
@@ -1282,7 +1336,9 @@
 
         function resetToDefaultData() {
             if (confirm("Yakin ingin mereset seluruh data kelas dan siswa kembali ke pengaturan awal standar?")) {
-                localStorage.removeItem('murojaah_classes_data_v11');
+                localStorage.removeItem('murojaah_classes_data_v12');
+                localStorage.removeItem('murojaah_checklist_state_v12');
+                localStorage.removeItem('murojaah_history_logs_v12');
                 classesData = JSON.parse(JSON.stringify(defaultClassesData));
                 populateClassStudents("Kelas Ali", aliStudents);
                 populateClassStudents("Kelas Zubair", zubairStudents);
@@ -1291,7 +1347,7 @@
                 renderClassSelector();
                 renderClassesManagement();
                 renderDayContent(activeDay);
-                showModal("Berhasil", "Data berhasil di-reset ke setelan awal.");
+                showModal("Berhasil", "Data memori berhasil di-reset ke setelan awal.");
             }
         }
 
@@ -1318,7 +1374,7 @@
             const templateClass = Object.values(classesData)[0];
             classesData[name] = JSON.parse(JSON.stringify(templateClass));
             
-            localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+            localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
             closeAddClassModal();
             renderClassSelector();
             renderClassesManagement();
@@ -1332,7 +1388,7 @@
             }
             if (confirm(`Yakin ingin menghapus ${className}?`)) {
                 delete classesData[className];
-                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
                 activeClassName = Object.keys(classesData)[0];
                 renderClassSelector();
                 renderClassesManagement();
@@ -1362,7 +1418,7 @@
             const { className, day, groupIndex } = targetGroupForAdd;
             if (classesData[className] && classesData[className][day]) {
                 classesData[className][day].groups[groupIndex].students.push(studentName);
-                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
                 closeAddStudentModal();
                 renderClassesManagement();
                 renderDayContent(activeDay);
@@ -1373,7 +1429,7 @@
         function deleteStudent(className, day, groupIndex, studentIndex) {
             if (confirm("Yakin ingin menghapus siswa ini dari kelompok?")) {
                 classesData[className][day].groups[groupIndex].students.splice(studentIndex, 1);
-                localStorage.setItem('murojaah_classes_data_v11', JSON.stringify(classesData));
+                localStorage.setItem('murojaah_classes_data_v12', JSON.stringify(classesData));
                 renderClassesManagement();
                 renderDayContent(activeDay);
             }
